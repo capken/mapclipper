@@ -20,15 +20,25 @@
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
-  </head>
-  <body ng-app="starter">
+    <script src="js/controllers.js"></script>
 
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
-      <ion-content>
-      </ion-content>
-    </ion-pane>
+    <!-- Google Maps' js -->
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA1l3GrctMRBhHg7V1htQvP_3_b5jggUuY&sensor=false" type="text/javascript"></script>
+  </head>
+  <body ng-app="mapclipper" ng-controller="MainCtrl">
+    <ion-header-bar class="bar-light item-input-inset" >
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios7-search placeholder-icon"></i>
+        <input type="search" placeholder="Search or enter an address">
+      </label>
+    </ion-header-bar>
+    <ion-content>
+      <div id="map" data-tap-disabled="true"></div>
+    </ion-content>
+    <ion-footer-bar class="bar-light">
+      <button class="button button-icon icon ion-navigate"></button>
+      <h1 class="title">MapClipper</h1>
+      <button class="button button-icon icon ion-scissors"></button>
+    </ion-footer-bar>
   </body>
 </html>
