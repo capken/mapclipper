@@ -9,6 +9,8 @@ angular.module('mapclipper.controllers', [])
     };
 
     $scope.map = new google.maps.Map(mapDiv, options);
+    $scope.geocoder = new google.maps.Geocoder();
+
     initClippedArea();
   };
 
@@ -43,7 +45,7 @@ angular.module('mapclipper.controllers', [])
     }
   };
 
-  function initClippedArea() {
+  var initClippedArea = function() {
     $scope.clippedArea = new google.maps.Rectangle();
 
     google.maps.event.addListenerOnce($scope.map, 'idle', function() {
@@ -57,6 +59,23 @@ angular.module('mapclipper.controllers', [])
     google.maps.event.addListener($scope.map, 'center_changed', function() {
       $scope.clippedArea.setOptions(rectOptions());
     });
+  };
+
+  $scope.search = function(event) {
+    if(event.keyCode === 13 && $scope.address !== "") {
+      if(window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.close();
+      }
+      //$cordovaKeyboard.close();
+      $scope.geocoder.geocode( { "address": $scope.address }, function(data, status) {
+        if(status == google.maps.GeocoderStatus.OK) {
+          var loc = data[0].geometry.location;
+          $scope.map.setCenter(loc);
+        } else {
+          //alert("Location not found!");
+        }
+      });
+    }
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);

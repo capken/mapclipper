@@ -5,6 +5,7 @@ angular.module('mapclipper', ['ionic', 'mapclipper.controllers'])
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
+      console.log('here');
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
