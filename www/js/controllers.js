@@ -1,11 +1,14 @@
 angular.module('mapclipper.controllers', [])
 
-.controller('MainCtrl', function($scope, $stateParams) {
+.controller('MainCtrl', function($scope, $stateParams,
+    $cordovaGeolocation, $cordovaKeyboard, $cordovaInAppBrowser) {
   var initialize = function() {
     var mapDiv = document.getElementById("map");
     var options = {
       center: new google.maps.LatLng(43.07493,-89.381388),
-      zoom: 13
+      zoom: 13,
+      zoomControl: false,
+      streetViewControl: false
     };
 
     $scope.map = new google.maps.Map(mapDiv, options);
@@ -63,10 +66,7 @@ angular.module('mapclipper.controllers', [])
 
   $scope.search = function(event) {
     if(event.keyCode === 13 && $scope.address !== "") {
-      if(window.cordova && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.close();
-      }
-      //$cordovaKeyboard.close();
+      $cordovaKeyboard.close();
       $scope.geocoder.geocode( { "address": $scope.address }, function(data, status) {
         if(status == google.maps.GeocoderStatus.OK) {
           var loc = data[0].geometry.location;
@@ -76,6 +76,34 @@ angular.module('mapclipper.controllers', [])
         }
       });
     }
+  }
+
+  $scope.getUserPosition = function() {
+    $cordovaGeolocation
+    .getCurrentPosition({
+      timeout: 5000,
+      enableHighAccuracy: false
+    })
+    .then(function (position) {
+      var loc = new google.maps.LatLng(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      $scope.map.setCenter(loc);
+    }, function(err) {
+    });
+  }
+
+  $scope.clip = function() {
+    $cordovaInAppBrowser.init('toolbarposition=top,presentationstyle=pagesheet,location=no');
+
+    $cordovaInAppBrowser
+    .open('http://baidu.com', '_blank')
+    .then(function(event) {
+      console.log(JSON.stringify(event));
+    }, function(event) {
+      console.log(JSON.stringify(event));
+    });
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
