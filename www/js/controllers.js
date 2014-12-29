@@ -1,7 +1,7 @@
 angular.module('mapclipper.controllers', [])
 
-.controller('MainCtrl', function($scope, $stateParams,
-    $cordovaGeolocation, $cordovaKeyboard) {
+.controller('MainCtrl', function($scope, $stateParams, $http,
+    $ionicModal, $cordovaGeolocation, $cordovaKeyboard) {
   var initialize = function() {
     var mapDiv = document.getElementById('map');
     var options = {
@@ -94,26 +94,51 @@ angular.module('mapclipper.controllers', [])
     });
   }
 
-  $scope.clip = function() {
+  $scope.noteData = {};
 
+  $ionicModal.fromTemplateUrl('templates/save.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.closeSave = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.doSave = function() {};
+
+  $scope.clip = function() {
     if(angular.isDefined(window.localStorage.authToken)) {
       console.log('token=' + window.localStorage.authToken);
-    } else {
-      var callbackURL = 'http://localhost/mapclipper';
-      if (window.cordova) {
-        var cordovaMetadata = cordova.require('cordova/plugin_list').metadata;
-        if (cordovaMetadata.hasOwnProperty('org.apache.cordova.inappbrowser') === true) {
-          var browserRef = window.open('http://10.0.0.5:4567/oauth/request_token?back_url=' + encodeURIComponent(callbackURL),
-              '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
-          browserRef.addEventListener('loadstart', function(event) {
-            if ((event.url).indexOf(callbackURL) === 0) {
-              var authToken = (event.url).split('auth_token=')[1];
-              window.localStorage.authToken = authToken;
-              browserRef.close();
-            }
-          });
+      $http.get('http://localhost:4567/api/notes' + 
+          '?auth_token=' + window.localStorage.authToken )
+      .success(
+        function(data, status, headers, config) {
+          console.log(JSON.stringify(data));
+          $scope.notes = data.notes;
+          $scope.modal.show();
         }
-      }
+      );
+    } else {
+      $scope.notes = [{"guid":"88c196c1-c488-4e4f-8d29-9f63f0226b3e","title":"MapClipper: Tue Dec 16 2014 14:58:50"},{"guid":"38308089-6643-46b4-b330-4b08406dbac4","title":"Untitled"},{"guid":"b91c104e-1865-48cb-b14b-f44e75da13fa","title":"Reference"},{"guid":"a5808a2a-6664-47e5-98a0-4a270e7ce0c0","title":"App Information Request Form for the Evernote App Center"},{"guid":"7264e9e1-37f3-4521-868d-c581703b743a","title":"Maverick"}];
+      $scope.modal.show();
+
+      //var callbackURL = 'http://localhost/mapclipper';
+      //if (window.cordova) {
+      //  var cordovaMetadata = cordova.require('cordova/plugin_list').metadata;
+      //  if (cordovaMetadata.hasOwnProperty('org.apache.cordova.inappbrowser') === true) {
+      //    var browserRef = window.open('http://localhost:4567/oauth/request_token?back_url=' + encodeURIComponent(callbackURL),
+      //        '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
+      //    browserRef.addEventListener('loadstart', function(event) {
+      //      if ((event.url).indexOf(callbackURL) === 0) {
+      //        var authToken = (event.url).split('auth_token=')[1];
+      //        window.localStorage.authToken = authToken;
+      //        browserRef.close();
+      //      }
+      //    });
+      //  }
+      //}
     }
 
   }
