@@ -1,9 +1,9 @@
 angular.module('mapclipper.controllers', [])
 
 .controller('MainCtrl', function($scope, $stateParams,
-    $cordovaGeolocation, $cordovaKeyboard, $cordovaInAppBrowser) {
+    $cordovaGeolocation, $cordovaKeyboard) {
   var initialize = function() {
-    var mapDiv = document.getElementById("map");
+    var mapDiv = document.getElementById('map');
     var options = {
       center: new google.maps.LatLng(43.07493,-89.381388),
       zoom: 13,
@@ -65,14 +65,14 @@ angular.module('mapclipper.controllers', [])
   };
 
   $scope.search = function(event) {
-    if(event.keyCode === 13 && $scope.address !== "") {
+    if(event.keyCode === 13 && $scope.address !== '') {
       $cordovaKeyboard.close();
-      $scope.geocoder.geocode( { "address": $scope.address }, function(data, status) {
+      $scope.geocoder.geocode( { 'address': $scope.address }, function(data, status) {
         if(status == google.maps.GeocoderStatus.OK) {
           var loc = data[0].geometry.location;
           $scope.map.setCenter(loc);
         } else {
-          //alert("Location not found!");
+          //alert('Location not found!');
         }
       });
     }
@@ -95,15 +95,27 @@ angular.module('mapclipper.controllers', [])
   }
 
   $scope.clip = function() {
-    $cordovaInAppBrowser.init('toolbarposition=top,presentationstyle=pagesheet,location=no');
 
-    $cordovaInAppBrowser
-    .open('http://baidu.com', '_blank')
-    .then(function(event) {
-      console.log(JSON.stringify(event));
-    }, function(event) {
-      console.log(JSON.stringify(event));
-    });
+    if(angular.isDefined(window.localStorage.authToken)) {
+      console.log('token=' + window.localStorage.authToken);
+    } else {
+      var callbackURL = 'http://localhost/mapclipper';
+      if (window.cordova) {
+        var cordovaMetadata = cordova.require('cordova/plugin_list').metadata;
+        if (cordovaMetadata.hasOwnProperty('org.apache.cordova.inappbrowser') === true) {
+          var browserRef = window.open('http://10.0.0.5:4567/oauth/request_token?back_url=' + encodeURIComponent(callbackURL),
+              '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
+          browserRef.addEventListener('loadstart', function(event) {
+            if ((event.url).indexOf(callbackURL) === 0) {
+              var authToken = (event.url).split('auth_token=')[1];
+              window.localStorage.authToken = authToken;
+              browserRef.close();
+            }
+          });
+        }
+      }
+    }
+
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
