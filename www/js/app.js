@@ -1,4 +1,4 @@
-angular.module('mapclipper', ['ionic', 'ngCordova', 'mapclipper.controllers'])
+angular.module('mapclipper', ['ionic', 'ngCordova', 'mapclipper.controllers', 'mapclipper.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
