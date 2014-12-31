@@ -64,6 +64,10 @@ angular.module('mapclipper.controllers', [])
     });
   };
 
+  $scope.resetSearch = function() {
+    $scope.address = null;
+  }
+
   $scope.search = function(event) {
     if(event.keyCode === 13 && $scope.address !== '') {
       $cordovaKeyboard.close();
@@ -109,12 +113,14 @@ angular.module('mapclipper.controllers', [])
   $scope.doSave = function() {};
 
   $scope.clip = function() {
+    $scope.notes = [];
+
     if(angular.isUndefined(window.localStorage.authToken)) {
       API.getAuthToken(function(token) {
         window.localStorage.authToken = token;
+        $scope.modal.show();
         API.getNotes(window.localStorage.authToken, function(data){
           $scope.notes = data.notes;
-          $scope.modal.show();
         });
       });
     } else {

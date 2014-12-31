@@ -6,3 +6,12 @@
 .scroll {
   height: 100%;
 }
+
+.loading {
+  font-size: 32px;
+  text-align: center;
+}
+
+#cancelSearchBtn {
+  font-size: 14px;
+}

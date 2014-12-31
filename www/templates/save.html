@@ -1,29 +1,27 @@
 <ion-modal-view>
   <ion-header-bar>
+    <button class="button button-clear button-positive" ng-click="doSave()">OK</button>
     <h1 class="title">Save to Evernote</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeSave()">Close</button>
-    </div>
+    <button class="button button-clear" ng-click="closeSave()">Cancel</button>
   </ion-header-bar>
   <ion-content>
-    <form ng-submit="doSave()">
-      <div class="list">
-        <label class="item item-input">
-          <input type="text" placeholder="New Note Name" ng-model="noteData.newNoteName">
-        </label>
-        <label class="item item-divider">
-          Or select one from last 5 notes updated
-        </label>
-        <label class="item item-radio" ng-repeat="note in notes">
-          <input type="radio" name="note" ng-model="noteData.selectedNoteGuid" value="{{note.guid}}">
-          <div class="item-content">{{note.title}}</div>
-          <i class="radio-icon ion-checkmark-circled"></i>
-        </label>
-
-      </div>
-      <div class="padding">
-        <button class="button button-block button-positive" type="submit">Save</button>
-      </div>
-    </form>
+    <div class="list list-inset">
+      <label class="item item-input">
+        <input type="text" placeholder="New Note Name" ng-model="noteData.newNoteName">
+      </label>
+    </div>
+    <div class="list list-inset">
+      <label class="item item-divider">
+        Your last 5 notes updated
+      </label>
+      <label class="item loading" ng-hide="notes.length > 0" >
+        <i class="radio-icon ion-loading-c"></i>
+      </label>
+      <label class="item item-radio" ng-repeat="note in notes">
+        <input type="radio" name="note" ng-model="noteData.selectedNoteGuid" value="{{note.guid}}">
+        <div class="item-content">{{note.title}}</div>
+        <i class="radio-icon ion-checkmark-circled"></i>
+      </label>
+    </div>
   </ion-content>
 </ion-modal-view>
