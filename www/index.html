@@ -31,13 +31,12 @@
   <body ng-app="mapclipper" ng-controller="MainCtrl">
     <ion-header-bar class="bar-light item-input-inset" >
       <div class="item-input-wrapper">
-        <i class="icon ion-ios7-search placeholder-icon"></i>
-        <input id="searchBox" type="search" ng-model="address" ng-keyup="search($event)" placeholder="Search or enter an address">
-        <a ng-show="address" ng-click="resetSearch();$event.stopPropagation();"><i class="icon ion-ios7-close-outline"></i></a>
+        <input id="searchBox" type="search" placeholder="Enter an address" ng-model="address">
       </div>
+      <button id="searchBtn" class="button button-small button-clear" ng-click="search($event)">Search</button>
     </ion-header-bar>
     <ion-content>
-      <div id="map" data-tap-disabled="true"></div>
+      <div id="map" ng-click='clickMap()' data-tap-disabled="true"></div>
     </ion-content>
     <ion-footer-bar class="bar-light">
       <button class="button button-icon" ng-click="getUserPosition()">

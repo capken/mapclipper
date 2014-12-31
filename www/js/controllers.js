@@ -64,13 +64,16 @@ angular.module('mapclipper.controllers', [])
     });
   };
 
-  $scope.resetSearch = function() {
-    $scope.address = null;
+  $scope.clickMap = function() {
+    if(window.cordova && $cordovaKeyboard.isVisible) {
+      document.getElementById('searchBox').blur();
+    }
   }
 
   $scope.search = function(event) {
-    if(event.keyCode === 13 && $scope.address !== '') {
-      $cordovaKeyboard.close();
+    if(angular.isString($scope.address) && 
+        $scope.address.length > 0) {
+      document.getElementById('searchBox').blur();
       $scope.geocoder.geocode( { 'address': $scope.address }, function(data, status) {
         if(status == google.maps.GeocoderStatus.OK) {
           var loc = data[0].geometry.location;
