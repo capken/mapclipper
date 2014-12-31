@@ -33,7 +33,11 @@ angular.module('mapclipper.services', [])
       ).error(function() {
       });
     },
-    saveNote: function(token, note) {
+    saveNote: function(token, data, callback) {
+      console.log('save => ' + JSON.stringify(data));
+    },
+    updateNote: function(token, noteGuid, data, callback) {
+      console.log('update(' + noteGuid + ') => ' + JSON.stringify(data));
     }
   };
 

@@ -7,7 +7,7 @@
   <ion-content>
     <div class="list list-inset">
       <label class="item item-input">
-        <input type="text" placeholder="New Note Name" ng-model="noteData.newNoteName">
+        <input type="text" ng-focus="noteData.selectedNoteGuid = null" placeholder="New Note Name" ng-model="noteData.newNoteName">
       </label>
     </div>
     <div class="list list-inset">

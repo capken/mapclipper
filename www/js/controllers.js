@@ -85,7 +85,10 @@ angular.module('mapclipper.controllers', [])
     }
   }
 
+  $scope.locationIcon = 'ion-navigate';
   $scope.getUserPosition = function() {
+    $scope.locationIcon = 'ion-loading-d';
+
     $cordovaGeolocation
     .getCurrentPosition({
       timeout: 5000,
@@ -97,12 +100,13 @@ angular.module('mapclipper.controllers', [])
         position.coords.longitude
       );
       $scope.map.setCenter(loc);
+      $scope.locationIcon = 'ion-navigate';
     }, function(err) {
+      $scope.locationIcon = 'ion-navigate';
     });
   }
 
   $scope.noteData = {};
-
   $ionicModal.fromTemplateUrl('templates/save.html', {
     scope: $scope
   }).then(function(modal) {
@@ -113,7 +117,29 @@ angular.module('mapclipper.controllers', [])
     $scope.modal.hide();
   };
 
-  $scope.doSave = function() {};
+  $scope.doSave = function() {
+    var center = $scope.map.getCenter();
+    var data = {
+      zoom: $scope.map.getZoom(),
+      map_type: $scope.map.getMapTypeId(),
+      lat: center.lat(),
+      lng: center.lng(),
+      note_name: $scope.noteData.newNoteName
+    }
+
+    if($scope.noteData.selectedNoteGuid !== null) {
+      API.updateNote(window.localStorage.authToken, 
+        $scope.noteData.selectedNoteGuid, data,
+        function() {
+        }
+      );
+    } else {
+      API.saveNote(window.localStorage.authToken, data,
+        function() {
+        }
+      );
+    }
+  };
 
   $scope.clip = function() {
     $scope.notes = [];
