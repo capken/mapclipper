@@ -119,45 +119,35 @@ angular.module('mapclipper.controllers', [])
 
   $scope.doSave = function() {
     var center = $scope.map.getCenter();
-    var data = {
-      zoom: $scope.map.getZoom(),
-      map_type: $scope.map.getMapTypeId(),
+    var noteData = {
       lat: center.lat(),
       lng: center.lng(),
-      note_name: $scope.noteData.newNoteName
+      mlat: center.lat(),
+      mlng: center.lng(),
+      zoom: $scope.map.getZoom(),
+      map_type: $scope.map.getMapTypeId(),
+      note_name: $scope.noteData.newNoteName,
+      selectedNoteGuid: $scope.noteData.selectedNoteGuid
     }
 
-    if($scope.noteData.selectedNoteGuid !== null) {
-      API.updateNote(window.localStorage.authToken, 
-        $scope.noteData.selectedNoteGuid, data,
-        function() {
-        }
-      );
-    } else {
-      API.saveNote(window.localStorage.authToken, data,
-        function() {
-        }
-      );
-    }
+    API.getValidToken().then(function() {
+      API.saveNote(noteData).then(function(data) {
+        console.log(data);
+      }, function(data) {
+        console.log(data);
+      });
+    });
   };
 
   $scope.clip = function() {
     $scope.notes = [];
 
-    if(angular.isUndefined(window.localStorage.authToken)) {
-      API.getAuthToken(function(token) {
-        window.localStorage.authToken = token;
-        $scope.modal.show();
-        API.getNotes(window.localStorage.authToken, function(data){
-          $scope.notes = data.notes;
-        });
-      });
-    } else {
+    API.getValidToken().then(function() {
       $scope.modal.show();
-      API.getNotes(window.localStorage.authToken, function(data){
+      API.getNotes().then(function(data) {
         $scope.notes = data.notes;
       });
-    }
+    });
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
