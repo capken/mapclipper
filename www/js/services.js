@@ -5,6 +5,7 @@ angular.module('mapclipper.services', [])
   var host = 'http://mapclipper.com';
   var oauthServiceURL = host + '/oauth/request_token' + 
     '?back_url=' + encodeURIComponent(callbackURL);
+  var geocoder = new google.maps.Geocoder();
 
   return {
     getValidToken: function() {
@@ -65,6 +66,21 @@ angular.module('mapclipper.services', [])
         deferred.resolve(data);
       }).error(function(data, status) {
         deferred.reject(data);
+      });
+
+      return deferred.promise;
+    },
+
+    searchAddress: function(address) {
+      var deferred = $q.defer();
+
+      geocoder.geocode( { address: address }, function(data, status) {
+        if(status == google.maps.GeocoderStatus.OK) {
+          var loc = data[0].geometry.location;
+          deferred.resolve(loc);
+        } else {
+          deferred.reject(data);
+        }
       });
 
       return deferred.promise;
