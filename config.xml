@@ -9,43 +9,29 @@
   </author>
   <content src="index.html"/>
   <access origin="*"/>
-
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="BackupWebStorage" value="none"/>
-
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
-
   <platform name="ios">
-    <!-- iOS 8.0+ -->
-    <!-- iPhone 6 Plus  -->
-    <icon src="www/img/icon/ios/Icon-60@3x.png" width="180" height="180" />
-    <!-- iOS 7.0+ -->
-    <!-- iPhone / iPod Touch  -->
-    <icon src="www/img/icon/ios/Icon-60.png" width="60" height="60" />
-    <icon src="www/img/icon/ios/Icon-60@2x.png" width="120" height="120" />
-    <!-- iPad -->
-    <icon src="www/img/icon/ios/Icon-76.png" width="76" height="76" />
-    <icon src="www/img/icon/ios/Icon-76@2x.png" width="152" height="152" />
-    <!-- iOS 6.1 -->
-    <!-- Spotlight Icon -->
-    <icon src="www/img/icon/ios/Icon-40.png" width="40" height="40" />
-    <icon src="www/img/icon/ios/Icon-40@2x.png" width="80" height="80" />
-    <!-- iPhone / iPod Touch -->
-    <icon src="www/img/icon/ios/Icon.png" width="57" height="57" />
-    <icon src="www/img/icon/ios/Icon@2x.png" width="114" height="114" />
-    <!-- iPad -->
-    <icon src="www/img/icon/ios/Icon-72.png" width="72" height="72" />
-    <icon src="www/img/icon/ios/Icon-72@2x.png" width="144" height="144" />
-    <!-- iPhone Spotlight and Settings Icon -->
-    <icon src="www/img/icon/ios/Icon-Small.png" width="29" height="29" />
-    <icon src="www/img/icon/ios/Icon-Small@2x.png" width="58" height="58" />
-    <!-- iPad Spotlight and Settings Icon -->
-    <icon src="www/img/icon/ios/Icon-Small-50.png" width="50" height="50" />
-    <icon src="www/img/icon/ios/Icon-Small-50@2x.png" width="100" height="100" />
+    <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
+    <icon src="resources/ios/icon/icon@2x.png" width="114" height="114"/>
+    <icon src="resources/ios/icon/icon-40.png" width="40" height="40"/>
+    <icon src="resources/ios/icon/icon-40@2x.png" width="80" height="80"/>
+    <icon src="resources/ios/icon/icon-50.png" width="50" height="50"/>
+    <icon src="resources/ios/icon/icon-50@2x.png" width="100" height="100"/>
+    <icon src="resources/ios/icon/icon-60.png" width="60" height="60"/>
+    <icon src="resources/ios/icon/icon-60@2x.png" width="120" height="120"/>
+    <icon src="resources/ios/icon/icon-60@3x.png" width="180" height="180"/>
+    <icon src="resources/ios/icon/icon-72.png" width="72" height="72"/>
+    <icon src="resources/ios/icon/icon-72@2x.png" width="144" height="144"/>
+    <icon src="resources/ios/icon/icon-76.png" width="76" height="76"/>
+    <icon src="resources/ios/icon/icon-76@2x.png" width="152" height="152"/>
+    <icon src="resources/ios/icon/icon-small.png" width="29" height="29"/>
+    <icon src="resources/ios/icon/icon-small@2x.png" width="58" height="58"/>
   </platform>
-  
+  <icon src="resources/ios/icon/icon-40@2x.png"/>
 </widget>
